@@ -45,7 +45,7 @@ output "internet_gateway_object" {
 
 module "vcn" {
     # https://developer.hashicorp.com/terraform/language/modules/sources#module-sources
-   source = "https://github.com/JBAnderson5/oci-tf-network.git//network"
+   source = "github.com/JBAnderson5/oci-tf-network.git//network"
 
     compartment_id = var.compartment_id
     vcn_display_name = var.vcn_display_name
