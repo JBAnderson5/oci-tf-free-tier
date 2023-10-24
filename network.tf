@@ -18,23 +18,18 @@ variable "vcn_display_name" {
 output "vcn_object" {
     value = module.vcn.vcn 
 }
-
-output "service_gateway_object" {
-  value = module.vcn.service_gateway
-}
-
-output "service_cidr_object" {
-  value = module.vcn.service_cidr
-}
-
-output "nat_gateway_object" {
-  value = module.vcn.nat_gateway
-}
-
 output "internet_gateway_object" {
   value = module.vcn.internet_gateway
 }
 
+
+output "cidr_blocks" {
+  value = module.subnet.cidr_blocks
+}
+
+output "service_cidr" {
+  value = module.subnet.service_cidr
+}
 
 
 # logic
