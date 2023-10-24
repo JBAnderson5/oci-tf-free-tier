@@ -64,5 +64,32 @@ module "subnet" {
     prefix = "ft"
     subnet_dns_label = "mysubdomain"
     cidr_block = "10.0.1.0/24"
+
+
+    sl_rules = {
+      "egress_traffic" = {
+      dest_source_cidr = "anywhere"
+  },/*
+  "ssh_traffic" = {
+    dest_source_cidr = "vcn"
+    min = 22
+  },
+  "icmp_vcn" = {
+    direction = "ingress"
+    protocol = "icmp"
+    dest_source_cidr = "vcn"
+    min = 3
+  }, */
+  "icmp_anywhere" = {
+    direction = "ingress"
+    protocol = "icmp"
+    dest_source_cidr = "anywhere"
+    min = 3
+    max = 4
+  },
+
+
+}
+
     
 }
