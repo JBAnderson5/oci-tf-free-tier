@@ -15,21 +15,6 @@ variable "vcn_display_name" {
 
 # outputs
 
-output "vcn_object" {
-    value = module.vcn.vcn 
-}
-output "internet_gateway_object" {
-  value = module.vcn.internet_gateway
-}
-
-
-output "cidr_blocks" {
-  value = module.subnet.cidr_blocks
-}
-
-output "service_cidr" {
-  value = module.subnet.service_cidr
-}
 
 
 # logic
