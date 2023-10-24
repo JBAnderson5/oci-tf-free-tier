@@ -64,7 +64,7 @@ module "subnet" {
     sl_rules = {
       "egress_traffic" = {
       dest_source_cidr = "anywhere"
-  },/*
+  },
   "ssh_traffic" = {
     dest_source_cidr = "vcn"
     min = 22
@@ -74,7 +74,7 @@ module "subnet" {
     protocol = "icmp"
     dest_source_cidr = "vcn"
     min = 3
-  }, */
+  },
   "icmp_anywhere" = {
     direction = "ingress"
     protocol = "icmp"
