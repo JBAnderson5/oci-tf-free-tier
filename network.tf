@@ -54,3 +54,15 @@ module "vcn" {
 
     create_internet_gateway = true
 }
+
+
+module "subnet" {
+    source = "github.com/JBAnderson5/oci-tf-network.git//subnet"
+
+    compartment_id = var.compartment_id
+    network = module.vcn
+    prefix = "ft"
+    subnet_dns_label = "mysubdomain"
+    cidr_block = "10.0.1.0/24"
+    
+}
