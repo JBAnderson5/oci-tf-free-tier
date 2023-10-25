@@ -36,7 +36,7 @@ module "vcn" {
 }
 
 
-module "subnet" {
+module "public-subnet" {
     source = "github.com/JBAnderson5/oci-tf-network.git//subnet"
 
     compartment_id = var.compartment_id
@@ -72,4 +72,41 @@ module "subnet" {
 }
 
     
+}
+
+module "private-subnet" {
+    source = "github.com/JBAnderson5/oci-tf-network.git//subnet"
+
+    compartment_id = var.compartment_id
+    vcn = module.vcn.vcn 
+
+    prefix = "private"
+    subnet_dns_label = "myprivdomain"
+    cidr_block = "10.0.2.0/24"
+
+
+    sl_rules = {
+      "egress_traffic" = {
+      dest_source_cidr = "anywhere"
+  },
+  "ssh_traffic" = {
+    dest_source_cidr = "vcn"
+    min = 22
+  },
+  "icmp_vcn" = {
+    direction = "ingress"
+    protocol = "icmp"
+    dest_source_cidr = "vcn"
+    min = 3
+  },
+  "icmp_anywhere" = {
+    direction = "ingress"
+    protocol = "icmp"
+    dest_source_cidr = "anywhere"
+    min = 3
+    max = 4
+  },
+
+
+}
 }
