@@ -13,19 +13,31 @@ variable "vcn_display_name" {
   type = string
 }
 
+variable "vcn_id" {
+  default = null
+}
+
+variable "subnet_id" {
+  default = null
+}
+
 # outputs
 
 
 
 # logic
 
+locals {
+  subnet_id = var.subnet_id != null ? var.subnet_id : module.public-subnet.subnet.id
+}
+
 
 # resource or mixed module blocks
 
 
 module "vcn" {
-    # https://developer.hashicorp.com/terraform/language/modules/sources#module-sources
    source = "github.com/JBAnderson5/oci-tf-network.git//network"
+    count = var.vcn_id == null ? 1 : 0
 
     compartment_id = var.compartment_id
     vcn_display_name = var.vcn_display_name
@@ -38,9 +50,10 @@ module "vcn" {
 
 module "public-subnet" {
     source = "github.com/JBAnderson5/oci-tf-network.git//subnet"
+    count = var.subnet_id == null ? 1 : 0
 
     compartment_id = var.compartment_id
-    network = module.vcn
+    network = var.vcn_id == null ? module[0].vcn : var.vcn_id # todo need vcn module data source
     prefix = "ft"
     subnet_dns_label = "mysubdomain"
     cidr_block = "10.0.1.0/24"

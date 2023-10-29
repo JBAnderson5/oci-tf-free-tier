@@ -61,3 +61,19 @@ variables:
     title: VCN Name 
     description: user friendly name to refer to the vcn
     required: true
+
+  
+  ad:
+    type : oci:identity:availabilitydomain:name
+    title: Availability Domain 
+    required: true
+  
+  os:
+    title: Operating System
+    type: enum
+    enum:
+      - Oracle Linux Cloud Developer 8
+      - Oracle Linux
+      - Ubuntu
+      - CentOS
+    default: Oracle Linux Cloud Developer 8
