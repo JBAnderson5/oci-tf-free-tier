@@ -14,6 +14,10 @@ variable "private_key_path" {
 }
 
 
+variable "compartment_id" {
+  type = string
+}
+
 
 provider "oci" {
   tenancy_ocid     = "${var.tenancy_ocid}"

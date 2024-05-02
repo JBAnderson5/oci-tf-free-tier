@@ -1,17 +1,19 @@
 
 # inputs
 
-variable "compartment_id" {
-  type        = string
-  description = "ocid of the compartment to create resources in."
+variable "create_vm" {
+	type = bool
+  default = true
 }
+
 
 variable "instance_name" {
     type = string
 }
 
 variable "ad" {
-	type = string
+	type = number 
+	default = 1
 }
 
 variable "os" {
@@ -32,7 +34,7 @@ locals {
 # resource or mixed module blocks
 
 
-data "oci_core_images" "test_images" {
+data "oci_core_images" "this" {
     #Required
     compartment_id = var.compartment_id
 
@@ -40,7 +42,7 @@ data "oci_core_images" "test_images" {
     operating_system = var.os
     # operating_system_version = var.image_operating_system_version
     shape = local.shape
-    state = var.image_state
+    # state = var.image_state
     # sort_by = var.image_sort_by
     # Ssort_order = var.image_sort_order
 }
@@ -53,6 +55,8 @@ data "oci_identity_availability_domain" "this" {
 }
 
 resource "oci_core_instance" "this" {
+	count = var.create_vm ? 1 : 0
+
     display_name = var.instance_name
 
     compartment_id = var.compartment_id
@@ -76,7 +80,7 @@ resource "oci_core_instance" "this" {
 
     # Vnic info
     create_vnic_details {
-		assign_ipv6ip = "false"
+		# assign_ipv6ip = "false"
 		assign_private_dns_record = "true"
 		assign_public_ip = "false"
 		subnet_id = local.subnet_id 

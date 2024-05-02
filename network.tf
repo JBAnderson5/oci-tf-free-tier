@@ -5,8 +5,9 @@
 
 # inputs
 
-variable "compartment_id" {
-  type = string
+variable "create_network" {
+  type = bool 
+  default = true 
 }
 
 variable "vcn_display_name" {
@@ -28,7 +29,13 @@ variable "subnet_id" {
 # logic
 
 locals {
-  subnet_id = var.subnet_id != null ? var.subnet_id : module.public-subnet.subnet.id
+  subnet_id = (
+    var.subnet_id != null 
+      ? var.subnet_id 
+      : var.create_network
+        ? module.public-subnet[0].subnet.id
+        : null
+  )
 }
 
 
@@ -37,7 +44,7 @@ locals {
 
 module "vcn" {
    source = "github.com/JBAnderson5/oci-tf-network.git//network"
-    count = var.vcn_id == null ? 1 : 0
+    count = var.vcn_id == null && var.create_network ? 1 : 0
 
     compartment_id = var.compartment_id
     vcn_display_name = var.vcn_display_name
@@ -50,10 +57,10 @@ module "vcn" {
 
 module "public-subnet" {
     source = "github.com/JBAnderson5/oci-tf-network.git//subnet"
-    count = var.subnet_id == null ? 1 : 0
+    count = var.subnet_id == null && var.create_network ? 1 : 0
 
     compartment_id = var.compartment_id
-    network = var.vcn_id == null ? module[0].vcn : var.vcn_id # todo need vcn module data source
+    network = var.vcn_id == null ? module.vcn[0] : var.vcn_id # todo need vcn module data source
     prefix = "ft"
     subnet_dns_label = "mysubdomain"
     cidr_block = "10.0.1.0/24"
@@ -89,9 +96,10 @@ module "public-subnet" {
 
 module "private-subnet" {
     source = "github.com/JBAnderson5/oci-tf-network.git//subnet"
+    count = var.create_network ? 1 : 0
 
     compartment_id = var.compartment_id
-    vcn = module.vcn.vcn 
+    vcn = module.vcn[0].vcn 
 
     prefix = "private"
     subnet_dns_label = "myprivdomain"

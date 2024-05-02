@@ -19,10 +19,31 @@ variableGroups:
       - current_user_ocid
       - fingerprint
       - private_key_path
-  - title: "Minimum Requirements"
+  - title: "General Setup"
     variables:
       - compartment_id
+      - create_network
+      - create_vm
+      - create_adb
+      
+  - title: "Network"
+    variables: 
       - vcn_display_name
+      - vcn_id 
+      - subnet_id
+
+  - title: "VM"
+    variables: 
+      - instance_name
+      - ad
+      - os
+
+  - title: "ADB"
+    variables: 
+      - adb_name
+      - adb_workload
+      - adb_password
+      - adb_version
 
 
 variables:
@@ -64,7 +85,8 @@ variables:
 
   
   ad:
-    type : oci:identity:availabilitydomain:name
+    # type : oci:identity:availabilitydomain:name
+    type: number
     title: Availability Domain 
     required: true
   
